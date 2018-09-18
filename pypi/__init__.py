@@ -41,6 +41,8 @@ def init_routing(config):
     config.add_route('register', '/account/register')
     config.add_route('logout', '/account/logout')
 
+    # cms controller -- ADD AT VERY END (it'll match any URL)
+    config.add_route('cms_page', '*subpath')
 
 
     config.scan()
