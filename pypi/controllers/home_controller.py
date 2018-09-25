@@ -14,7 +14,7 @@ def get_test_packages():
 @view_config(route_name='home', renderer='pypi:templates/home/index.pt')
 def home_index(_):
     return {
-        'packages': get_test_packages(),
+        'packages': package_services.latest_releases(),
         'package_count': package_services.package_count(),
         'release_count': package_services.release_count(),
         'user_count': user_services.user_count()
