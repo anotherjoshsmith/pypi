@@ -3,6 +3,7 @@ from typing import List, Optional
 from pypi import DbSession
 from pypi.data.packages import Package
 from pypi.data.releases import Release
+from sqlalchemy.orm import subqueryload
 
 
 def package_count() -> int:
@@ -42,5 +43,8 @@ def latest_releases(limit=10) -> List[Package]:
 
 def find_package_by_name(package_name: str) -> Optional[Package]:
     session = DbSession.factory()
-
-    return session.query(Package).filter(Package.id == package_name).first()
+    # subqueryload is faster than joinedload
+    return session.query(Package) \
+        .options(subqueryload(Package.releases)) \
+        .filter(Package.id == package_name) \
+        .first()
