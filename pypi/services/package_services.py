@@ -47,4 +47,4 @@ def find_package_by_name(package_name: str) -> Optional[Package]:
     return session.query(Package) \
         .options(subqueryload(Package.releases)) \
         .filter(Package.id == package_name) \
-        .first()
+        .first()  # doesn't actually fetch the data until we call .first()
