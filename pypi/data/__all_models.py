@@ -1,6 +1,7 @@
 # import all classes we define.
 
-
+# noinspection PyUnresolvedReferences
+import pypi.data.auditing
 # noinspection PyUnresolvedReferences
 import pypi.data.downloads
 # noinspection PyUnresolvedReferences
