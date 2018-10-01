@@ -6,7 +6,7 @@ from pyramid.view import view_config
 @view_config(route_name='account_home',
              renderer='pypi:templates/account/index.pt',
              request_method='GET')
-def index(request):
+def index(_):
     return {}
 
 
@@ -31,7 +31,7 @@ def login_post(request):
 @view_config(route_name='register',
              renderer='pypi:templates/account/register.pt',
              request_method='GET')
-def register_get(request):
+def register_get(_):
     return {}
 
 
