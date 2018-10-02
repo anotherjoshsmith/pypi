@@ -113,3 +113,7 @@ footer {
     color: white;
     background-color: #006dad;
 }
+
+.error-msg {
+    color: #9b0000;
+}
