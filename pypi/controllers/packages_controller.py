@@ -2,9 +2,8 @@ from pyramid.view import view_config
 from pyramid.request import Request
 import pyramid.httpexceptions as x
 
-
-# /project/{package_name}
-from pypi.services import package_services
+from pypi.infrastructure import cookie_auth
+from pypi.services import package_service
 
 
 @view_config(route_name='package_details',
@@ -14,8 +13,7 @@ from pypi.services import package_services
 def details(request: Request):
     package_name = request.matchdict.get('package_name')
 
-    package = package_services.find_package_by_name(package_name)
-
+    package = package_service.find_package_by_name(package_name)
     if not package:
         raise x.HTTPNotFound()
 
@@ -35,53 +33,20 @@ def details(request: Request):
         'latest_release': latest_release,
         'release_version': latest_version,
         'maintainers': [],
-        'is_latest': True
-    }
-
-
-# /project/{package_name}/releases
-@view_config(route_name='releases',
-             renderer='pypi:templates/packages/releases.pt')
-@view_config(route_name='releases/',
-             renderer='pypi:templates/packages/releases.pt')
-def releases(request: Request):
-    package_name = request.matchdict.get('package_name')
-
-    if not package_name:
-        raise x.HTTPNotFound()
-
-    return {
-        'package_name': package_name,
-        'releases': []
-    }
-
-
-# /project/{package_name}/releases/{release_version}
-@view_config(route_name='release_version',
-             renderer='pypi:templates/packages/releases.pt')
-def release_version(request: Request):
-    package_name = request.matchdict.get('package_name')
-    release_version = request.matchdict.get('release_version')
-
-    if not package_name:
-        raise x.HTTPNotFound()
-
-    return {
-        'package_name': package_name,
-        'release_version': release_version,
-        'releases': []
+        'is_latest': True,
+        'user_id': cookie_auth.get_user_id_via_auth_cookie(request)
     }
 
 
 # /{num}
 @view_config(route_name='popular',
              renderer='pypi:templates/packages/details.pt')
-def release_version(request: Request):
+def popular(request: Request):
     num = int(request.matchdict.get('num', -1))
-
-    if not (0 <= num or num < 10):
+    if not (1 <= num or num <= 10):
         raise x.HTTPNotFound()
 
     return {
-        'package_name': f"The {num}th popular package."
+        'package_name': "The {}th popular package".format(num),
+        'user_id': cookie_auth.get_user_id_via_auth_cookie(request)
     }

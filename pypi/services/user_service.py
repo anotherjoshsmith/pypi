@@ -15,8 +15,8 @@ def create_user(email: str, name: str, password: str) -> User:
     user.name = name
     user.email = email.lower().strip()
     user.hashed_password = hash_text(password)
-    # commit user to database
-    session = DbSession.factory
+
+    session = DbSession.factory()
     session.add(user)
     session.commit()
 
@@ -28,23 +28,27 @@ def hash_text(text: str) -> str:
     return hashed_text
 
 
-def verify_hash(hashed_text: str, plain_text: str) -> str:
+def verify_hash(hashed_text: str, plain_text: str) -> bool:
     return sha512_crypt.verify(plain_text, hashed_text)
 
 
-def login_user(email: str, password: str) -> Optional(User):
+def login_user(email: str, password: str) -> Optional[User]:
     if not email:
         return None
 
     email = email.lower().strip()
 
     session = DbSession.factory()
-    user = session.query(User).filter(User.email == email).one()
-
+    user = session.query(User).filter(User.email == email).first()
     if not user:
         return None
 
-    if not verify_hash(password, user.hashed_password):
+    if not verify_hash(user.hashed_password, password):
         return None
 
     return user
+
+
+def find_user_by_id(user_id: int) -> Optional[User]:
+    session = DbSession.factory()
+    return session.query(User).filter(User.id == user_id).first()

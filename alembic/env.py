@@ -3,11 +3,6 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 
-# work around since alembic isn't finding the pypi package...
-import os.path
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
 from pypi.data.modelbase import SqlAlchemyBase
 # noinspection PyUnresolvedReferences
 from pypi.data import *

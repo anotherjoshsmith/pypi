@@ -10,7 +10,4 @@
 
     </div>
 
-    <div metal:fill-slot="additional-css" tal:omit-tag>
-        <!--additional css from the page-->
-    </div>
 </div>
