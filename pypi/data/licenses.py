@@ -1,4 +1,3 @@
-
 import datetime
 import sqlalchemy
 from pypi.data.modelbase import SqlAlchemyBase

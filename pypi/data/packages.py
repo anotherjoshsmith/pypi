@@ -1,4 +1,5 @@
 import datetime
+
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from pypi.data.modelbase import SqlAlchemyBase
@@ -26,9 +27,8 @@ class Package(SqlAlchemyBase):
     releases = orm.relation("Release", order_by=[
         Release.major_ver.desc(),
         Release.minor_ver.desc(),
-        Release.build_ver.desc()
+        Release.build_ver.desc(),
     ], back_populates='package')
-    # maintainers
 
     def __repr__(self):
-        return f'<Package {self.id}'
+        return '<Package {}>'.format(self.id)

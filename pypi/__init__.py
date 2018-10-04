@@ -1,4 +1,5 @@
 import os
+
 from pyramid.config import Configurator
 
 from pypi.data.db_session import DbSession
@@ -45,7 +46,7 @@ def init_routing(config):
     config.add_route('register', '/account/register')
     config.add_route('logout', '/account/logout')
 
-    # cms controller -- ADD AT VERY END (it'll match any URL)
+    # cms controller -- VERY END
     config.add_route('cms_page', '*subpath')
 
     config.scan()
@@ -57,6 +58,5 @@ def init_db(_):
             os.path.dirname(__file__),
             'db',
             'pypi.sqlite'
-        )
-    )
+        ))
     DbSession.global_init(db_file)
